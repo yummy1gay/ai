@@ -1,3 +1,5 @@
+#dev: @yummy1gay
+
 import os
 import json
 import requests
@@ -10,6 +12,11 @@ bot_token = '6841028399:AAEziS8K7SlCVV7bxJaJDZ_phjTURTh_QyI'
 elevenlabs_api_key = '642ccb358bcc15c64a990b84c499eaa5'
 voice_id_1 = 'QUkTP5zGztmb17GWHSnj'
 voice_id_2 = 'kqi0xEeNkRZvVryPZNFQ'
+
+voice_id_to_name = {
+    voice_id_1: 'Эйден Флинн',
+    voice_id_2: 'Горо Номору',
+}
 
 client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
@@ -64,7 +71,16 @@ async def echo(event):
     if voice_message:
         audio_filename = f"{event.id}_{event.date.strftime('%Y%m%d_%H%M%S')}"
         converted_audio = await convert_audio(voice_message, audio_filename)
-        await client.send_file(event.chat_id, converted_audio, voice_note=True, caption=f"🗣 Голос: {voice_id}")
+
+        character_name = voice_id_to_name.get(voice_id, 'Неизвестный персонаж')
+
+        await client.send_file(
+            event.chat_id,
+            converted_audio,
+            voice_note=True,
+            caption=f"🗣 <b>Голос:</b> <i>{character_name}</i>",
+            parse_mode='HTML'
+        )
         os.remove(converted_audio)
     else:
         await event.respond('❌ <b>Ошибка при генерации голоса</b>, <i>Обратитесь к @yummy1gay за репортбагом</i>', parse_mode='HTML')
@@ -74,7 +90,7 @@ async def start(event):
     await event.respond(
         '👋 <b>Привет!</b> <i>С помощью данного бота можно сгенерировать аудио голосом Эйдена Флинна.</i>\n'
         '✍️ <i>Просто отправь мне текст и я его озвучу</i>'
-        '🗣 <i>Выбери голос которым будет озвучиватся текст:</i>',
+        '🗣 <i>Выбери голос которым будет озвучиваться текст:</i>',
         buttons=[
             [Button.inline('Эйден Флинн', data='voice_1')],
             [Button.inline('Горо Номору', data='voice_2')]
@@ -88,7 +104,7 @@ async def choose_voice_1(event):
     user_voice_preferences[user_id] = voice_id_1
     await event.edit(
         '👋 <b>Привет!</b> <i>С помощью данного бота можно сгенерировать аудио голосом Эйдена Флинна, и Горо Номору</i>\n'
-        '✍️ <i>Просто отправь мне текст и я его озвучу</i>'
+        '✍️ <i>Просто отправь мне текст и я его озвучу</i>\n'
         '🗣 <i>Выбран голос Эйдена Флинна</i>', parse_mode='HTML'
     )
 
@@ -98,7 +114,7 @@ async def choose_voice_2(event):
     user_voice_preferences[user_id] = voice_id_2
     await event.edit(
         '👋 <b>Привет!</b> <i>С помощью данного бота можно сгенерировать аудио голосом Эйдена Флинна, и Горо Номору</i>\n'
-        '✍️ <i>Просто отправь мне текст и я его озвучу</i>'
+        '✍️ <i>Просто отправь мне текст и я его озвучу</i>\n'
         '🗣 <i>Выбран голос Горо Номору</i>', parse_mode='HTML'
     )
 
