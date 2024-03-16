@@ -5,13 +5,13 @@ import json
 import requests
 from telethon import TelegramClient, events, Button
 
-api_id = '9609511'
-api_hash = '066c47a00d147eb82ccd6af1f7bc7826'
-bot_token = '6841028399:AAEziS8K7SlCVV7bxJaJDZ_phjTURTh_QyI'
+api_id = ''
+api_hash = ''
+bot_token = ''
 
-elevenlabs_api_key = '642ccb358bcc15c64a990b84c499eaa5'
-voice_id_1 = 'QUkTP5zGztmb17GWHSnj'
-voice_id_2 = 'kqi0xEeNkRZvVryPZNFQ'
+elevenlabs_api_key = '' #elevenlabs.io
+voice_id_1 = ''
+voice_id_2 = ''
 
 voice_id_to_name = {
     voice_id_1: 'Эйден Флинн',
